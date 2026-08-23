@@ -15,10 +15,10 @@
   "temp_prefix_exact": null,
   "candidate_text_sha256": "a6621f8a93d73b4917f747f046737201d6361f56f12e604e08068363a59a4dc4",
   "decomp_me": {
-    "score": null,
+    "score": 177,
     "max_score": 191000,
-    "percentage": null,
-    "status": "local-frontier-not-rescored",
+    "percentage": 99.91,
+    "status": "hosted-frontier",
     "slug": null,
     "based_on_slug": "FDgt8",
     "previous_frontier": {
@@ -31,6 +31,6 @@
   "notes": [
     "Whole .text section comparison is required because the exported target symbol size is zero.",
     "The supplied FDgt8 scratch scored 190 on decomp.me and had 29 local allocation mismatches.",
-    "This composed AST frontier has 25 local word mismatches, including 20 FP register sites, but has not yet been rescored on decomp.me."
+    "This composed AST frontier has 25 local word mismatches, including 20 FP register sites, and scores 177 / 99.91% on decomp.me as reported by the user."
   ]
 }
