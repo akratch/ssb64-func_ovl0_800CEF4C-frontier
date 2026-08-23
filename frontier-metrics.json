@@ -1,0 +1,19 @@
+{
+  "schema": "ssb64-func-frontier-v1",
+  "verdict": "allocation-mismatch",
+  "words": 116,
+  "raw": 127,
+  "norm": 161,
+  "regs": 116,
+  "fp": 115,
+  "opcodes": 0,
+  "gaps": 0,
+  "insns": 1868,
+  "frame": -168,
+  "first_divergent_row": 49,
+  "temp_prefix_exact": 1701,
+  "notes": [
+    "Whole .text section comparison is required because the exported target symbol size is zero.",
+    "The hosted decomp.me score has not yet been measured for this frontier."
+  ]
+}
