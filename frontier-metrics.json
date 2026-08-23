@@ -1,11 +1,11 @@
 {
   "schema": "ssb64-func-frontier-v1",
   "verdict": "allocation-mismatch",
-  "words": 116,
-  "raw": 127,
-  "norm": 161,
-  "regs": 116,
-  "fp": 115,
+  "words": 114,
+  "raw": 125,
+  "norm": 159,
+  "regs": 114,
+  "fp": 113,
   "opcodes": 0,
   "gaps": 0,
   "insns": 1868,
@@ -13,13 +13,19 @@
   "first_divergent_row": 49,
   "temp_prefix_exact": 1701,
   "decomp_me": {
-    "score": 934,
+    "score": null,
     "max_score": 191000,
-    "percentage": 99.5109947643979,
-    "reported_by": "user"
+    "percentage": null,
+    "status": "pending",
+    "previous_frontier": {
+      "score": 934,
+      "percentage": 99.5109947643979,
+      "reported_by": "user"
+    }
   },
   "notes": [
     "Whole .text section comparison is required because the exported target symbol size is zero.",
-    "The hosted decomp.me score for this frontier was reported as 934 (99.51%)."
+    "The preceding 116-word frontier scored 934 (99.51%) on decomp.me.",
+    "This 114-word frontier has not yet been scored on decomp.me."
   ]
 }

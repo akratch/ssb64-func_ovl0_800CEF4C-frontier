@@ -683,15 +683,15 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
 
         sp70 = ABSF(gtor->unk_gtor_0x38);
         
-        lbGetSinCosUShort(sx3, cx3, ABSF(gtor->unk_gtor_0x3C), angle_id_2);
+        lbGetSinCosUShort(cx3, sx4, ABSF(gtor->unk_gtor_0x3C), angle_id_2);
         
-        sp70 += this_ptcl->vel.z * (sx3 / cx3);
+        sp70 += this_ptcl->vel.z * (cx3 / sx4);
         f1 = this_ptcl->vel.y;
         sp70 *= f1;
         
         this_ptcl->vel.x += gtor->unk_gtor_0x2C;
 
-        lbGetSinCosUShort(sx4, cx4, this_ptcl->vel.x, angle_id);
+        lbGetSinCosUShort(sx3, cx4, this_ptcl->vel.x, angle_id);
         
         sp70 *= (1.0F / 32768.0F);
 
@@ -699,7 +699,7 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
         f32 sp6C;     // f2
         f32 sx1, sx2; // sp5C, sp58
         f32 cx1, cx2; // f16=>sp54, f12=>sp50 
-        f32 sx3, cx3; // f18, f0=>sp44
+        f32 cx3, sx4; // f18, f0=>sp44
         */
         new_var = &sp70;
         f0 = (*new_var);
@@ -707,7 +707,7 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
 
         this_ptcl->pos.x = ((f0 * cx2) + (this_ptcl->vel.z * sx2)) + gtor->pos.x;
         f1 = (*new_var);
-        f1 *= sx4;
+        f1 *= sx3;
         this_ptcl->pos.y = ((-f0 * sx1 * sx2) + (f1 * cx1)) + (this_ptcl->vel.z * sx1 * cx2) + gtor->pos.y;
         this_ptcl->pos.z = ((-f0 * cx1 * sx2) - (f1 * sx1)) + (this_ptcl->vel.z * cx1 * cx2) + gtor->pos.z;
     }
