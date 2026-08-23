@@ -675,9 +675,9 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
         lbGetSinCosUShort(sx2, cx2, this_ptcl->friction, angle_id);
         
         sx1 *= (1.0F / 32768.0F);
-        cx1 *= (1.0F / 32768.0F);
-        sx2 *= (1.0F / 32768.0F);
         cx2 *= (1.0F / 32768.0F);
+        sx2 *= (1.0F / 32768.0F);
+        cx1 *= (1.0F / 32768.0F);
 
         this_ptcl->vel.z += gtor->generator_vars.unk_gtor_vars.f;
 
