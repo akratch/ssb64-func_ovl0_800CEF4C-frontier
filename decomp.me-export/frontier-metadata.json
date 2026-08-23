@@ -7,36 +7,36 @@
   "diff_flags": [],
   "preset": null,
   "name": "func_ovl0_800CEF4C",
-  "description": "Codex-race 165-point / 25-word target-consumer-order frontier",
+  "description": "Codex/Fable-race 150-point / 21-word pre-sine donor frontier",
   "compiler": "ido7.1",
   "platform": "n64",
   "compiler_flags": "-O2 -mips2",
   "diff_label": "func_ovl0_800CEF4C",
-  "score": 165,
+  "score": 150,
   "max_score": 191000,
   "match_override": false,
   "family": "vJPFM",
   "local_comparison": {
-    "words": 25,
-    "raw": 37,
-    "norm": 25,
-    "regs": 25,
-    "fp": 24,
+    "words": 21,
+    "raw": 33,
+    "norm": 21,
+    "regs": 21,
+    "fp": 20,
     "constants": 0,
     "opcodes": 0,
     "gaps": 0,
     "insns": 1868,
     "frame": -168,
     "first_divergent_row": 49,
-    "candidate_text_sha256": "a186099d3d3dd2959566a840fc8ef366443bf40e5d1581f6bea94d7b79f322ab"
+    "candidate_text_sha256": "7b61f8a1ea608598b8a7a4dc44d2ae42ed04b321f1c69fdac111983c927b6bc4"
   },
   "site_faithful_score": {
-    "score": 165,
+    "score": 150,
     "max_score": 191000,
-    "percentage": 99.91361256544502,
+    "percentage": 99.92146596858639,
     "baseline_calibration_score": 177,
     "asm_differ_commit": "96fc879d9d8293193cf8452f0926eafc751546d7"
   },
-  "source_sha256": "cc2f5ca0d9ebdb8ad1e52485fcb9dc129945b29a448ed6e8e950510e40d88131",
-  "current_object_sha256": "012678a0865744b35b11d8ca8deca284a3967bf692a5f8aa72d9df61b0027fab"
+  "source_sha256": "6427f1c9a2a5b9459726cf6f996cd1307c7d01fbfbbcc93296bead7ecdd73e74",
+  "current_object_sha256": "2b6c9565ed6b2451d1d2fb8a68ca9f9ef6df0f15bd1d3d81f181662a5bdcba3a"
 }

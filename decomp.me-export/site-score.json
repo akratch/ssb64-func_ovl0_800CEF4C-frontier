@@ -1,14 +1,14 @@
 {
   "schema": "decomp-me-site-faithful-score-v1",
-  "score": 165,
+  "score": 150,
   "max_score": 191000,
-  "percentage": 99.91361256544502,
+  "percentage": 99.92146596858639,
   "status": "hosted-confirmation-pending",
   "baseline_calibration": {
     "expected": 177,
     "observed": 177
   },
   "asm_differ_commit": "96fc879d9d8293193cf8452f0926eafc751546d7",
-  "source_sha256": "cc2f5ca0d9ebdb8ad1e52485fcb9dc129945b29a448ed6e8e950510e40d88131",
-  "current_object_sha256": "012678a0865744b35b11d8ca8deca284a3967bf692a5f8aa72d9df61b0027fab"
+  "source_sha256": "6427f1c9a2a5b9459726cf6f996cd1307c7d01fbfbbcc93296bead7ecdd73e74",
+  "current_object_sha256": "2b6c9565ed6b2451d1d2fb8a68ca9f9ef6df0f15bd1d3d81f181662a5bdcba3a"
 }

@@ -686,10 +686,10 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
 
         // sx3 = f18, ?
         // cx3 = f0, ?
-        lbGetSinCosUShort(sx3, cx3, ABSF(gtor->unk_gtor_0x3C), angle_id_2);
+        { angle_id_2 = SINTABLE_RAD_TO_ID(ABSF(gtor->unk_gtor_0x3C)) & 0xFFF; if (!sx3); if (!sx3); sx3 = gSinTable[angle_id_2 & SINTABLE_MASK_ID]; if (angle_id_2 & 0x800) { sx3 = -sx3; } angle_id_2 += 0x400; cx3 = gSinTable[angle_id_2 & SINTABLE_MASK_ID]; if (angle_id_2 & 0x800) { cx3 = -cx3; } }
 
         temp2 = this_ptcl->vel.z;
-        sp70[0] += this_ptcl->vel.z * (sx3 / cx3);
+        sp70[0] += temp2 * (sx3 / cx3);
         sp70[0] *= this_ptcl->vel.y;
         
         this_ptcl->vel.x += gtor->unk_gtor_0x2C;
@@ -702,12 +702,15 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
 
         f0 = cx4[0] * sp70[0];
         this_ptcl->pos.x = ((cx4[0] * sp70[0] * cx2) + (temp2 * sx2)) + gtor->pos.x;
-        temp1 = -f0;
         f1 = sp70[0] * sx3;
+        temp1 = -f0;
         this_ptcl->pos.y = (((((temp1 * sx1) * sx2) + (f1 * cx1)) + ((temp2 * sx1) * cx2)) + gtor->pos.y);
         if (!f0);
+        if (!f1);
+        if (!temp1);
+        if (!temp1);
         if (!temp2);
-        this_ptcl->pos.z = (((((temp1 * cx1) * sx2) + (-(f1 * sx1))) + ((temp2 * cx1) * cx2)) + gtor->pos.z);
+        this_ptcl->pos.z = ((((-(f1 * sx1)) + ((temp1 * cx1) * sx2)) + ((temp2 * cx1) * cx2)) + gtor->pos.z);
     }
     else
     {

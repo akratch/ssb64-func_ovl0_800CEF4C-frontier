@@ -1,11 +1,11 @@
 {
   "schema": "ssb64-func-frontier-v1",
   "verdict": "allocation-mismatch",
-  "words": 25,
-  "raw": 37,
-  "norm": 25,
-  "regs": 25,
-  "fp": 24,
+  "words": 21,
+  "raw": 33,
+  "norm": 21,
+  "regs": 21,
+  "fp": 20,
   "constants": 0,
   "opcodes": 0,
   "gaps": 0,
@@ -13,11 +13,11 @@
   "frame": -168,
   "first_divergent_row": 49,
   "temp_prefix_exact": null,
-  "candidate_text_sha256": "a186099d3d3dd2959566a840fc8ef366443bf40e5d1581f6bea94d7b79f322ab",
+  "candidate_text_sha256": "7b61f8a1ea608598b8a7a4dc44d2ae42ed04b321f1c69fdac111983c927b6bc4",
   "decomp_me": {
-    "score": 165,
+    "score": 150,
     "max_score": 191000,
-    "percentage": 99.91361256544502,
+    "percentage": 99.92146596858639,
     "status": "site-faithful-score-hosted-confirmation-pending",
     "slug": null,
     "based_on_slug": "FDgt8",
@@ -32,6 +32,6 @@
     "Whole .text section comparison is required because the exported target symbol size is zero.",
     "The prior Git frontier scored 177 on decomp.me as reported by the user.",
     "The local scorer uses decomp.me's asm-differ path and reproduces the prior 177 score exactly.",
-    "Target consumer order removes four stack-home penalties; the new source scores 165 locally under the site-faithful scorer. Direct hosted confirmation is pending."
+    "The pre-sine sx3 donor, f0-first read order, and merged sx3/sx4 source shape reduce the frontier to 21 words and score 150 locally. Direct hosted confirmation is pending."
   ]
 }

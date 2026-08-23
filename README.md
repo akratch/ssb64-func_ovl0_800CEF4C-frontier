@@ -5,13 +5,13 @@ Private handoff repository for the final unmatched function in
 
 ## Current frontier
 
-This Codex-race source scores **165 / 99.9136%** with decomp.me's current
-`asm-differ` scorer, advancing the user-confirmed hosted frontier of 177. The
+This Codex/Fable-race source scores **150 / 99.9215%** with decomp.me's current
+`asm-differ` scorer, advancing the prior Codex frontier of 165. The
 scorer was calibrated by reproducing that 177 result exactly. The local
-whole-section comparison remains at 25 differing instruction words. It has the
+whole-section comparison is at 21 differing instruction words. It has the
 exact 1,868-instruction shape, opcode sequence, branch/gap structure, and
-`-168` stack frame. The residual is 24 floating-point register sites and one
-integer register site; all four prior stack-home mismatches are exact.
+`-168` stack frame. The residual is 20 floating-point register sites and one
+integer register site; all stack-home mismatches are exact.
 
 This is the current site-faithful scoring frontier; direct hosted paste
 confirmation is pending. `source.c` is paste-ready. Use IDO 7.1 with
