@@ -1,5 +1,5 @@
 {
-  "status": "local-frontier-not-rescored",
+  "status": "site-faithful-score-hosted-confirmation-pending",
   "slug": null,
   "parent": "FDgt8",
   "language": "C",
@@ -7,27 +7,36 @@
   "diff_flags": [],
   "preset": null,
   "name": "func_ovl0_800CEF4C",
-  "description": "Local 25-word / 20-FP frontier composed from exported scratch FDgt8",
+  "description": "Codex-race 165-point / 25-word target-consumer-order frontier",
   "compiler": "ido7.1",
   "platform": "n64",
   "compiler_flags": "-O2 -mips2",
   "diff_label": "func_ovl0_800CEF4C",
-  "score": null,
+  "score": 165,
   "max_score": 191000,
   "match_override": false,
   "family": "vJPFM",
   "local_comparison": {
     "words": 25,
     "raw": 37,
-    "norm": 21,
-    "regs": 21,
-    "fp": 20,
-    "constants": 4,
+    "norm": 25,
+    "regs": 25,
+    "fp": 24,
+    "constants": 0,
     "opcodes": 0,
     "gaps": 0,
     "insns": 1868,
     "frame": -168,
     "first_divergent_row": 49,
-    "candidate_text_sha256": "a6621f8a93d73b4917f747f046737201d6361f56f12e604e08068363a59a4dc4"
-  }
+    "candidate_text_sha256": "a186099d3d3dd2959566a840fc8ef366443bf40e5d1581f6bea94d7b79f322ab"
+  },
+  "site_faithful_score": {
+    "score": 165,
+    "max_score": 191000,
+    "percentage": 99.91361256544502,
+    "baseline_calibration_score": 177,
+    "asm_differ_commit": "96fc879d9d8293193cf8452f0926eafc751546d7"
+  },
+  "source_sha256": "cc2f5ca0d9ebdb8ad1e52485fcb9dc129945b29a448ed6e8e950510e40d88131",
+  "current_object_sha256": "012678a0865744b35b11d8ca8deca284a3967bf692a5f8aa72d9df61b0027fab"
 }

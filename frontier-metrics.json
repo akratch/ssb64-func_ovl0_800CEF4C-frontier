@@ -3,34 +3,35 @@
   "verdict": "allocation-mismatch",
   "words": 25,
   "raw": 37,
-  "norm": 21,
-  "regs": 21,
-  "fp": 20,
-  "constants": 4,
+  "norm": 25,
+  "regs": 25,
+  "fp": 24,
+  "constants": 0,
   "opcodes": 0,
   "gaps": 0,
   "insns": 1868,
   "frame": -168,
   "first_divergent_row": 49,
   "temp_prefix_exact": null,
-  "candidate_text_sha256": "a6621f8a93d73b4917f747f046737201d6361f56f12e604e08068363a59a4dc4",
+  "candidate_text_sha256": "a186099d3d3dd2959566a840fc8ef366443bf40e5d1581f6bea94d7b79f322ab",
   "decomp_me": {
-    "score": 177,
+    "score": 165,
     "max_score": 191000,
-    "percentage": 99.91,
-    "status": "hosted-frontier",
+    "percentage": 99.91361256544502,
+    "status": "site-faithful-score-hosted-confirmation-pending",
     "slug": null,
     "based_on_slug": "FDgt8",
     "previous_frontier": {
-      "score": 190,
-      "percentage": 99.90052356020942,
-      "slug": "FDgt8",
+      "score": 177,
+      "percentage": 99.90732984293194,
+      "slug": null,
       "reported_by": "user"
     }
   },
   "notes": [
     "Whole .text section comparison is required because the exported target symbol size is zero.",
-    "The supplied FDgt8 scratch scored 190 on decomp.me and had 29 local allocation mismatches.",
-    "This composed AST frontier has 25 local word mismatches, including 20 FP register sites, and scores 177 / 99.91% on decomp.me as reported by the user."
+    "The prior Git frontier scored 177 on decomp.me as reported by the user.",
+    "The local scorer uses decomp.me's asm-differ path and reproduces the prior 177 score exactly.",
+    "Target consumer order removes four stack-home penalties; the new source scores 165 locally under the site-faithful scorer. Direct hosted confirmation is pending."
   ]
 }
