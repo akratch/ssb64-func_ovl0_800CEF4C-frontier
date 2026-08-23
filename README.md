@@ -7,13 +7,13 @@ Private handoff repository for the final unmatched function in
 
 This is a measurable improvement over exported scratch `3Qcp4` (hosted score
 999): the local whole-section comparison drops from 162 differing instruction
-words to 114. The generated code has the exact 1,868-instruction shape, opcode
+words to 110. The generated code has the exact 1,868-instruction shape, opcode
 sequence, branch/gap structure, and `-168` stack frame. The remaining local
-differences are register allocation (113 floating-point sites and one integer
+differences are register allocation (109 floating-point sites and one integer
 site).
 
 The preceding 116-word frontier scored **934 / 191000** on decomp.me. This
-114-word frontier is awaiting a hosted score. Use IDO 7.1 with `-O2 -mips2`.
+110-word frontier is awaiting a hosted score. Use IDO 7.1 with `-O2 -mips2`.
 
 ## Contents
 

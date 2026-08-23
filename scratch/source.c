@@ -733,6 +733,7 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
 
         if (sLBParticleAttachDObjs[svar1] != NULL)
         {
+            if (!cx1);
             if (!cx3); // fake
             sLBParticleAttachDObjs[svar1]->translate.vec.f.x = this_ptcl->pos.x;
             sLBParticleAttachDObjs[svar1]->translate.vec.f.y = this_ptcl->pos.y;
