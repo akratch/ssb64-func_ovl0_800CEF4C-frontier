@@ -685,7 +685,7 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
         
         lbGetSinCosUShort(cx3, sx4, ABSF(gtor->unk_gtor_0x3C), angle_id_2);
         
-        sp70 += this_ptcl->vel.z * (cx3 / sx4);
+        sp70 = sp70 + (this_ptcl->vel.z * (cx3 / sx4));
         f1 = this_ptcl->vel.y;
         sp70 *= f1;
         

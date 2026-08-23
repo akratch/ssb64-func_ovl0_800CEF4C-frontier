@@ -1,11 +1,11 @@
 {
   "schema": "ssb64-func-frontier-v1",
   "verdict": "allocation-mismatch",
-  "words": 108,
-  "raw": 119,
-  "norm": 153,
-  "regs": 108,
-  "fp": 107,
+  "words": 90,
+  "raw": 102,
+  "norm": 137,
+  "regs": 90,
+  "fp": 89,
   "opcodes": 0,
   "gaps": 0,
   "insns": 1868,
@@ -26,6 +26,6 @@
   "notes": [
     "Whole .text section comparison is required because the exported target symbol size is zero.",
     "The preceding 116-word frontier scored 934 (99.51%) on decomp.me.",
-    "This 108-word frontier has not yet been scored on decomp.me."
+    "This 90-word frontier has not yet been scored on decomp.me."
   ]
 }
