@@ -1,6 +1,6 @@
 {
-    "slug": "3Qcp4",
-    "parent": "vJPFM",
+    "slug": "FDgt8",
+    "parent": "KtgCR",
     "owner": {
         "is_anonymous": false,
         "id": 1858273,
@@ -11,20 +11,17 @@
     },
     "language": "C",
     "libraries": [],
-    "diff_flags": [
-        "",
-        "-DIFFlevenshtein"
-    ],
+    "diff_flags": [],
     "preset": null,
     "name": "func_ovl0_800CEF4C",
     "description": "",
-    "creation_time": "2026-03-06T00:14:21.273849+09:00",
-    "last_updated": "2026-05-05T22:38:58.200028+09:00",
+    "creation_time": "2026-08-24T00:08:56.077710+09:00",
+    "last_updated": "2026-08-24T00:08:56.077715+09:00",
     "compiler": "ido7.1",
     "platform": "n64",
     "compiler_flags": "-O2 -mips2",
     "diff_label": "func_ovl0_800CEF4C",
-    "score": 999,
+    "score": 190,
     "max_score": 191000,
     "match_override": false,
     "family": "vJPFM"

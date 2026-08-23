@@ -1,4 +1,6 @@
 extern u16 gSinTable[0x800];
+#define lbParticleReadFloatBE bytecode_read_f32
+#define lbParticleReadUShort bytecode_read_u16
 
 #define LBPARTICLE_FLAG_ATTACH            0x8000
 
@@ -700,9 +702,12 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
 
         f0 = cx4[0] * sp70[0];
         this_ptcl->pos.x = ((cx4[0] * sp70[0] * cx2) + (temp2 * sx2)) + gtor->pos.x;
+        temp1 = -f0;
         f1 = sp70[0] * sx3;
-        this_ptcl->pos.y = ((-f0 * sx1 * sx2) + (f1 * cx1)) + (temp2 * sx1 * cx2) + gtor->pos.y;
-        this_ptcl->pos.z = ((-f0 * cx1 * sx2) - (f1 * sx1)) + (temp2 * cx1 * cx2) + gtor->pos.z;
+        this_ptcl->pos.y = (((((temp2 * sx1) * cx2) + (f1 * cx1)) + ((temp1 * sx1) * sx2)) + gtor->pos.y);
+        if (!f0);
+        if (!temp2);
+        this_ptcl->pos.z = (((((temp2 * cx1) * cx2) + (-(f1 * sx1))) + ((temp1 * cx1) * sx2)) + gtor->pos.z);
     }
     else
     {

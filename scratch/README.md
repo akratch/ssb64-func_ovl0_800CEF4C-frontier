@@ -4,15 +4,14 @@ Project: `ssb-decomp-re`.
 
 ## Frontier status
 
-This is a measurable improvement over exported scratch `3Qcp4` (hosted score
-999): the local whole-section comparison drops from 162 differing instruction
-words to 31. The generated code has the exact 1,868-instruction shape, opcode
-sequence, branch/gap structure, and `-168` stack frame. The remaining local
-differences are register allocation (30 floating-point sites and one integer
-site).
+This source advances the exported `FDgt8` scratch (hosted score 190): the local
+whole-section comparison is down to 25 differing instruction words. It has the
+exact 1,868-instruction shape, opcode sequence, branch/gap structure, and
+`-168` stack frame. The residual is 20 floating-point register sites, one
+integer register site, and four stack-home offsets.
 
-This frontier is verified by exported decomp.me scratch `KtgCR` at
-**365 / 191000 (99.81%)**. `source.c` is paste-ready.
+This is the current local research frontier and has not yet been rescored on
+decomp.me. `source.c` is paste-ready.
 `../decomp.me-export/code.c` is an identical convenience copy alongside the
 exported context and object files.
 

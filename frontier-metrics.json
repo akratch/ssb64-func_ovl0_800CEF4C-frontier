@@ -1,33 +1,36 @@
 {
   "schema": "ssb64-func-frontier-v1",
   "verdict": "allocation-mismatch",
-  "words": 31,
-  "raw": 43,
-  "norm": 31,
-  "regs": 31,
-  "fp": 30,
+  "words": 25,
+  "raw": 37,
+  "norm": 21,
+  "regs": 21,
+  "fp": 20,
+  "constants": 4,
   "opcodes": 0,
   "gaps": 0,
   "insns": 1868,
   "frame": -168,
   "first_divergent_row": 49,
   "temp_prefix_exact": null,
+  "candidate_text_sha256": "a6621f8a93d73b4917f747f046737201d6361f56f12e604e08068363a59a4dc4",
   "decomp_me": {
-    "score": 365,
+    "score": null,
     "max_score": 191000,
-    "percentage": 99.80890052356021,
-    "status": "verified-export",
-    "slug": "KtgCR",
-    "reported_by": "user",
+    "percentage": null,
+    "status": "local-frontier-not-rescored",
+    "slug": null,
+    "based_on_slug": "FDgt8",
     "previous_frontier": {
-      "score": 934,
-      "percentage": 99.5109947643979,
+      "score": 190,
+      "percentage": 99.90052356020942,
+      "slug": "FDgt8",
       "reported_by": "user"
     }
   },
   "notes": [
     "Whole .text section comparison is required because the exported target symbol size is zero.",
-    "The preceding 116-word frontier scored 934 (99.51%) on decomp.me.",
-    "This 31-word frontier is the source from exported scratch KtgCR, scored 365 (99.81%) on decomp.me."
+    "The supplied FDgt8 scratch scored 190 on decomp.me and had 29 local allocation mismatches.",
+    "This composed AST frontier has 25 local word mismatches, including 20 FP register sites, but has not yet been rescored on decomp.me."
   ]
 }
