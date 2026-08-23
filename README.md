@@ -17,6 +17,9 @@ paste-ready. Use IDO 7.1 with `-O2 -mips2`.
 
 ## Contents
 
+- [`FABLE_HANDOFF.md`](FABLE_HANDOFF.md) is the full continuation brief,
+  including local artifact paths, allocator evidence, exhausted campaigns, and
+  the next staged experiments.
 - [`scratch/`](scratch/) is a strictly flat, checksum-verified
   `decomp-workbench` scratch bundle. Its README also explains how to create a
   fresh decomp.me scratch from the included target assembly and context.
