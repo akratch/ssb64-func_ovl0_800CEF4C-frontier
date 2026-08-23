@@ -11,9 +11,10 @@ sequence, branch/gap structure, and `-168` stack frame. The remaining local
 differences are register allocation (115 floating-point sites and one integer
 site).
 
-The hosted decomp.me score for this frontier has deliberately not been guessed.
-`source.c` is paste-ready for checking it. `../decomp.me-export/code.c` is an
-identical convenience copy alongside the exported context and object files.
+The hosted decomp.me score for this frontier is **934 / 191000**, or
+**99.5109947643979%**, as reported after checking this source. `source.c` is
+paste-ready. `../decomp.me-export/code.c` is an identical convenience copy
+alongside the exported context and object files.
 
 This directory is upload-neutral: creating it does not contact decomp.me.
 

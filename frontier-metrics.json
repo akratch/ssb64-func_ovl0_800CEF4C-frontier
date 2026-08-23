@@ -12,8 +12,14 @@
   "frame": -168,
   "first_divergent_row": 49,
   "temp_prefix_exact": 1701,
+  "decomp_me": {
+    "score": 934,
+    "max_score": 191000,
+    "percentage": 99.5109947643979,
+    "reported_by": "user"
+  },
   "notes": [
     "Whole .text section comparison is required because the exported target symbol size is zero.",
-    "The hosted decomp.me score has not yet been measured for this frontier."
+    "The hosted decomp.me score for this frontier was reported as 934 (99.51%)."
   ]
 }
