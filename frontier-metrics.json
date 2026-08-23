@@ -1,22 +1,24 @@
 {
   "schema": "ssb64-func-frontier-v1",
   "verdict": "allocation-mismatch",
-  "words": 90,
-  "raw": 102,
-  "norm": 137,
-  "regs": 90,
-  "fp": 89,
+  "words": 31,
+  "raw": 43,
+  "norm": 31,
+  "regs": 31,
+  "fp": 30,
   "opcodes": 0,
   "gaps": 0,
   "insns": 1868,
   "frame": -168,
   "first_divergent_row": 49,
-  "temp_prefix_exact": 1701,
+  "temp_prefix_exact": null,
   "decomp_me": {
-    "score": null,
+    "score": 365,
     "max_score": 191000,
-    "percentage": null,
-    "status": "pending",
+    "percentage": 99.80890052356021,
+    "status": "verified-export",
+    "slug": "KtgCR",
+    "reported_by": "user",
     "previous_frontier": {
       "score": 934,
       "percentage": 99.5109947643979,
@@ -26,6 +28,6 @@
   "notes": [
     "Whole .text section comparison is required because the exported target symbol size is zero.",
     "The preceding 116-word frontier scored 934 (99.51%) on decomp.me.",
-    "This 90-word frontier has not yet been scored on decomp.me."
+    "This 31-word frontier is the source from exported scratch KtgCR, scored 365 (99.81%) on decomp.me."
   ]
 }

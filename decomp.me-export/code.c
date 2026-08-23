@@ -29,11 +29,6 @@ extern u16 gSinTable[0x800];
     }                                                 \
 }
 
-
-// for better match
-#define lbParticleReadFloatBE bytecode_read_f32
-#define lbParticleReadUShort bytecode_read_u16
-
 void func_ovl0_800CE188(void*);
 
 u8 *lbParticleReadFloatBE(u8*, f32*);
@@ -66,16 +61,17 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
     u8 opcode;
     f32 fvar; // s3
     f32 sp7C;
-    f32 unused1;
-    f32 *new_var;
-    f32 sp70;
-    f32 unused2[2];
+    f32 temp1, temp2;
+    f32 sp70[1];
+    f32 var_f14;
+    f32 unused2[1];
     f32 f0, f1;
     f32 sx1, sx2; // sp5C, sp58
     f32 cx1, cx2; // f16=>sp54, f12=>sp50
     u16 angle_id_2;
+    f32 sx4;
+    f32 cx4[1];
     f32 sx3, cx3; // f18, f0=>sp44
-    f32 sx4, cx4; 
     
     if (this_ptcl->flags & 0x800)
     {
@@ -475,8 +471,7 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
 
                         fvar += sp7C * rand_f32();
 
-                        sx3 = SQUARE(this_ptcl->vel.x) + SQUARE(this_ptcl->vel.y) + SQUARE(this_ptcl->vel.z);
-                        sp7C = sqrtf(sx3);
+                        sp7C = sqrtf(SQUARE(this_ptcl->vel.x) + SQUARE(this_ptcl->vel.y) + SQUARE(this_ptcl->vel.z));
                         
                         fvar /= sp7C;
 
@@ -671,45 +666,43 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
     if (this_ptcl->flags & 4)
     {
         gtor = this_ptcl->gtor;
+
+        // sx1 = ?, sp5C
+        // cx1 = f16, sp54
         lbGetSinCosUShort(sx1, cx1, this_ptcl->gravity, angle_id);
+        // sx2 = ?, sp58
+        // cx2 = f12, sp50
         lbGetSinCosUShort(sx2, cx2, this_ptcl->friction, angle_id);
         
         sx1 *= (1.0F / 32768.0F);
-        cx2 *= (1.0F / 32768.0F);
-        sx2 *= (1.0F / 32768.0F);
         cx1 *= (1.0F / 32768.0F);
+        sx2 *= (1.0F / 32768.0F);
+        cx2 *= (1.0F / 32768.0F);
 
         this_ptcl->vel.z += gtor->generator_vars.unk_gtor_vars.f;
+        sp70[0] = ABSF(gtor->unk_gtor_0x38);
 
-        sp70 = ABSF(gtor->unk_gtor_0x38);
-        
-        lbGetSinCosUShort(cx3, sx4, ABSF(gtor->unk_gtor_0x3C), angle_id_2);
-        
-        sp70 = sp70 + (this_ptcl->vel.z * (cx3 / sx4));
-        f1 = this_ptcl->vel.y;
-        sp70 *= f1;
+        // sx3 = f18, ?
+        // cx3 = f0, ?
+        lbGetSinCosUShort(sx3, cx3, ABSF(gtor->unk_gtor_0x3C), angle_id_2);
+
+        temp2 = this_ptcl->vel.z;
+        sp70[0] += this_ptcl->vel.z * (sx3 / cx3);
+        sp70[0] *= this_ptcl->vel.y;
         
         this_ptcl->vel.x += gtor->unk_gtor_0x2C;
 
-        lbGetSinCosUShort(sx3, cx4, this_ptcl->vel.x, angle_id);
+        // sx4 = f18, ?
+        // cx4 = f0, sp44
+        lbGetSinCosUShort(sx3, cx4[0], this_ptcl->vel.x, angle_id);
         
-        sp70 *= (1.0F / 32768.0F);
+        sp70[0] *= (1.0F / 32768.0F);
 
-        /*
-        f32 sp6C;     // f2
-        f32 sx1, sx2; // sp5C, sp58
-        f32 cx1, cx2; // f16=>sp54, f12=>sp50 
-        f32 cx3, sx4; // f18, f0=>sp44
-        */
-        new_var = &sp70;
-        f0 = (*new_var);
-        f0 *= cx4;
-
-        this_ptcl->pos.x = ((f0 * cx2) + (this_ptcl->vel.z * sx2)) + gtor->pos.x;
-        f1 = (*new_var);
-        f1 *= sx3;
-        this_ptcl->pos.y = ((-f0 * sx1 * sx2) + (f1 * cx1)) + (this_ptcl->vel.z * sx1 * cx2) + gtor->pos.y;
-        this_ptcl->pos.z = ((-f0 * cx1 * sx2) - (f1 * sx1)) + (this_ptcl->vel.z * cx1 * cx2) + gtor->pos.z;
+        f0 = cx4[0] * sp70[0];
+        this_ptcl->pos.x = ((cx4[0] * sp70[0] * cx2) + (temp2 * sx2)) + gtor->pos.x;
+        f1 = sp70[0] * sx3;
+        this_ptcl->pos.y = ((-f0 * sx1 * sx2) + (f1 * cx1)) + (temp2 * sx1 * cx2) + gtor->pos.y;
+        this_ptcl->pos.z = ((-f0 * cx1 * sx2) - (f1 * sx1)) + (temp2 * cx1 * cx2) + gtor->pos.z;
     }
     else
     {
@@ -733,8 +726,6 @@ efParticle* func_ovl0_800CEF4C(efParticle *this_ptcl, efParticle *other_ptcl, s3
 
         if (sLBParticleAttachDObjs[svar1] != NULL)
         {
-            if (!cx1);
-            if (!cx3); // fake
             sLBParticleAttachDObjs[svar1]->translate.vec.f.x = this_ptcl->pos.x;
             sLBParticleAttachDObjs[svar1]->translate.vec.f.y = this_ptcl->pos.y;
             sLBParticleAttachDObjs[svar1]->translate.vec.f.z = this_ptcl->pos.z;
