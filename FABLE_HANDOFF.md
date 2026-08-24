@@ -30,7 +30,11 @@ stream isolates the residual more tightly than the object diff:
 - UGEN already emits the target sequence:
   `move $2,$3; blt $2,209,...; addu $11,$2,-250`.
 - Stock IDO 7.1 `as1` rewrites only the fallthrough `addu` source from `$2`
-  to `$3` by path-local copy propagation.
+  to `$3` by path-local copy propagation. Static reverse-engineering and
+  `-peepdbg 2` identify the responsible routine specifically as `peep_reg`
+  (original `as1` at `0x4180dc`--`0x418d33`), not the separate `repl_reg`
+  routine. The decisive log line is
+  `Peepreg (INST 1) changed rs 2 => 3`.
 - IDO 7.1-t4 behaves identically. Feeding the same stream to IDO 5.3 `as1`
   also performs the row-49 propagation (and changes unrelated late code).
 
@@ -47,11 +51,29 @@ The following diagnostic-only insertions each prove that result:
 - an assembler pseudo-`nop` immediately before the `addu` (removed by `as1`);
 - a physical `move $3,$3` or `or $3,$3,$0` immediately before the `addu`
   (also removed by `as1`).
+- a branch to its immediately following local label at the same boundary.
+  `b`, always-true `beq`, register self-`beq`, and never-taken `bnez $0`
+  forms all reduce to zero code while their transient basic-block boundary
+  clears the copy fact.
 
 The same no-op records before the generated `move`, between the `move` and
 branch, or after the `addu` do not work. The barrier must occur on the high
 switch edge after the range branch and before subtraction. These patched
 streams are proof of the phase and exact target, not acceptable C solutions.
+
+An exhaustive follow-up duplicated every distinct non-instruction Binasm
+directive family observed in the real function at the pre-`addu` boundary.
+None blocks the rewrite. This includes LOC/file/section/function metadata,
+`.option O2`, alias/noalias and call metadata, mode-restoration records, frame
+metadata, and local labels. The only exact artificial insertions remain the
+three one-instruction mode spans, optimizer-erased physical identities, and
+removable next-label edges listed above.
+
+The corresponding source shortcut is also closed. IDO 7.1 CFE's complete
+pragma table has no inline-assembly, assembler-mode, or per-region optimization
+pragma. A 25-form source grid showed the accepted spellings emit byte-identical
+UGEN streams; `asm`, `__asm`, and `__asm__` are parsed as ordinary implicit
+function calls rather than inline assembly.
 
 ## Source-level donor evidence
 
@@ -70,9 +92,9 @@ Allocator traces explain the rotation:
 
 ## Exhausted probes on the score-10 source
 
-The local result corpus now contains 3,654 successfully compiled and statically
-compared variants (plus 32 rejected compilations), with no generated object
-executed. It includes the earlier 796-candidate campaigns plus:
+The local result corpus now contains at least 4,890 successfully compiled and
+statically compared source variants (plus rejected compilations), with no
+generated object executed. It includes the earlier 796-candidate campaigns plus:
 
 1. 84 switch spellings, types, local carriers, normalization spellings,
    declaration adjacency variants, and junction donor pairs.
@@ -88,6 +110,17 @@ executed. It includes the earlier 796-candidate campaigns plus:
 7. Compiler-only pragma, source-location, local-label, assembler-mode,
    identity-instruction, alias metadata, compiler-version, and debug-mode
    diagnostics.
+8. 70 controlling-expression identity/conversion spellings, followed by a
+   705-variant cast/donor cross. Ordinary identities fold to the one-word
+   basin; narrowing conversions move normalization before the range branch
+   and retain a 15-word structural residual.
+9. 291 declaration/order/qualifier/dummy-symbol/read crosses on the healed
+   donor basin. All row-49 healers collapse to the same nine-word `v1`/`a1`
+   rotation; 101 variants are byte-identical to that basin.
+10. 170 high-edge CFG variants covering out-of-domain cases, fallthroughs,
+    impossible edges, and direct forwarding edges. None creates the required
+    post-range predecessor/barrier; `case 256`/`257` stays closest at two
+    words by extending the high range.
 
 The important invariant is sharp: reads before the first opcode mask retain the
 one-word baseline; command reads from the first mask onward heal row 49 but
@@ -110,6 +143,23 @@ candidate must produce an identity record between the generated `blt` and
 `addu` without changing the single-switch block/table order. More declaration,
 empty-read, case-hole, split-switch, or ordinary cast grids are low value: those
 dimensions are now experimentally saturated.
+
+The active high-value searches are algebraically equivalent selector/case
+transformations and static reconstruction of UGEN's switch partitioning. The
+new branch-to-next result makes a removable source edge at the high-cluster
+entry equally valuable. A secondary route is a source shape that gives the
+high subtract block multiple predecessors: `as1`'s `update_ctnt` only carries
+the `$2 := $3` fact into a new basic block when it has one immediately
+preceding predecessor and no second predecessor.
+
+## Reusable workbench improvement
+
+`n64-decomp-workbench` main commit `b94d0c95e28280a76594d5695e72f1e66fbccfc8`
+adds `decomp-workbench pass binasm`. It statically decodes retained Binasm,
+prints an instruction window around a byte boundary, correlates `as1`
+peephole-debug evidence, and summarizes artificial barrier probe results. It
+was exercised against the real captured stream and correctly reports the
+`move`/range-branch/`addu` sequence and all twelve exact artificial barriers.
 
 If project policy permits a source-to-assembly splice, the proven one-record
 barrier gives an exact object immediately. It does not constitute a matching C
