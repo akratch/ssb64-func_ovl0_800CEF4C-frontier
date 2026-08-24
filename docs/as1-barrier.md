@@ -1,6 +1,6 @@
 # The assembler copy-propagation wall and the branch-to-next barrier
 
-This document covers the single instruction that separated an idiomatic
+Terms: [glossary.md](glossary.md). This document covers the single instruction that separated an idiomatic
 source from a byte-exact match, why it is an assembler problem rather than a
 compiler problem, and the mechanism that fixes it at zero instruction cost.
 
@@ -29,9 +29,10 @@ Peepreg (INST 1) changed rs 2 => 3
 ```
 
 `as1`'s `peep_reg` peephole (in the original SGI 7.1 binary at
-`0x4180dc`–`0x418d33`) performs path-local copy propagation: after
-`move v0, v1`, later uses of `v0` are rewritten to `v1` while the fact
-holds. Its `update_ctnt` bookkeeping carries a copy fact into a following
+`0x4180dc`–`0x418d33`) performs copy propagation within a straight-line
+path: after `move v0, v1` it records the copy fact "v0 currently equals
+v1" and rewrites later uses of `v0` to `v1` for as long as that note
+remains valid. Its `update_ctnt` bookkeeping carries a copy fact into a following
 basic block only when that block has exactly one predecessor and is entered
 by fallthrough; branch-target blocks start with no facts. The high dispatch
 is the single-predecessor fallthrough after the range branch, so the fact
@@ -44,10 +45,11 @@ The behavior is deterministic and closed against alternatives:
   words). The adjacent narrow gates (`-no_const_opts`, `-no_lui_opts`,
   `-nobopt`, `-noxbb`, …) either leave the residual or damage the function
   broadly.
-* A 24-way phase-provenance matrix (cfe/uopt/ugen/as1 crossed between
-  IDO 7.1 variants and IDO 5.3) shows cfe and uopt versions have no effect
-  on this basin; ugen+as1 determine it, every 7.1 `as1` build makes the same
-  choice, and 5.3 `as1` rewrites the identical stream far more aggressively.
+* Crossing compiler phases between IDO 7.1 variants and IDO 5.3 in all 24
+  combinations shows the cfe and uopt versions have no effect on this
+  outcome; ugen and as1 determine it, every 7.1 `as1` build makes the same
+  choice, and 5.3's `as1` rewrites the identical input far more
+  aggressively.
 * 7.1 cfe's complete pragma table contains no inline-assembly or
   per-region optimization pragma; `asm` spellings parse as ordinary calls.
 
@@ -69,10 +71,10 @@ object with the instruction count unchanged:
   boundary clears the fact, then the branch is deleted as removable.
 
 The same records placed before the `move`, between the `move` and the range
-branch, or after the `addu` do nothing. Every non-instruction directive
-family observed in the real function (source-location records, section and
-function metadata, `.option`, alias records, local labels) was duplicated at
-the boundary; none blocks the rewrite.
+branch, or after the `addu` do nothing. Every kind of non-instruction record that appears in the real function
+(source-location records, section and function metadata, `.option`, alias
+records, local labels) was also tried at the boundary; none blocks the
+rewrite.
 
 ## Why source code could not reach the boundary — and the exception
 

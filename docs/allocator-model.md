@@ -1,92 +1,88 @@
 # The IDO 7.1 global register allocator, measured
 
-Before the residual narrowed to the assembler, the hard part of this
-function was floating-point register allocation: a long phase of the work
-was spent proving *why* particular register assignments were unreachable
-from particular source families. The instrument was a rebuilt `uopt` whose
-only change is trace output at five points in `globalcolor` (web pop,
-interference propagation, live-block and transit bitvectors, the
-`compute_save` priority calculation, and neighbor lists), verified to
-produce byte-identical objects to stock. The model below held across every
-trace taken.
+Terms: [glossary.md](glossary.md). This page describes how IDO 7.1's
+`uopt` assigns registers, as reconstructed by instrumenting the compiler
+itself, and the practical consequences for matching. The instrument was a
+rebuilt `uopt` whose only change is added trace printing at five points in
+its allocation routine (`globalcolor`); it was verified to produce
+byte-identical objects to the stock compiler, so every number below comes
+from watching the real allocator run on this function.
 
-## The coloring model
+## How the allocator decides
 
-`globalcolor` is Chow-style priority coloring:
+`uopt` performs priority coloring over webs (see glossary):
 
-* **Priority** = `save / units`, where
-  `units = raw < 3 ? raw : ((raw − 2) >> 2) + 2` and
-  `raw = refnodes + cardbits` (cardbits = the transit bitvector's
-  population; the live-block bitvector is separate).
-* **Pop order**: maximum priority first; ties break by **ascending symbol
-  number**, which follows first textual occurrence in the source. Moving a
-  declaration is therefore a tie-break dial.
-* **Color choice**: lowest free color. For the FP bank the order is
-  `f0 f2 f12 f14 f16 f18` (colors 24–29).
-* **Interference** is **block-granular**: two webs interfere when their
-  live-block bitvectors overlap, not when their instruction ranges do. A
-  single cached field read can keep a block segment alive and forbid a
-  color permanently.
-* A popped web's color is OR'd into every uncolored neighbor's forbidden
-  mask. A web **splits** when it pops uncolorable; the split head takes a
-  color valid for its sub-range, and spill stores land at the split
-  boundary. The target's spill pairs in this function are consequences of
-  its coloring, not independent facts to match.
-* **Alias classes**: address-escaped locals and the field caches they
-  overlap fuse into one web, dragging each other's interference along.
-  In this function, one such class (an escaped stack local plus
-  `vel.z` field caches) permanently forbade a color for a neighboring web
-  in every trace of the two-field-read source family — the proof that that
-  family could never reach the target coloring.
+* **Each web gets a priority** = `save / units`.
+  `save` is the estimated benefit of keeping the web in a register —
+  in practice it increases by 10 for every reference to the web, with no
+  extra weight for references inside branches.
+  `units` grows with the web's size: `raw` = the web's reference count
+  plus the number of basic blocks it spans, and
+  `units = raw` when `raw < 3`, otherwise `((raw − 2) >> 2) + 2`.
+  Because of the integer shift, `units` moves in steps: `raw` up to 6
+  gives 2, 7–10 gives 3, 11–14 gives 4. Small changes in reference or
+  block counts therefore either do nothing or jump the priority
+  substantially — there is no smooth middle.
+* **Webs are processed in priority order**, highest first. Ties break by
+  which web's variable appears **first in the source text** — so moving a
+  declaration or first use can change the outcome of a tie without
+  changing any priority.
+* **Each web takes the lowest-numbered free register** among those not
+  already taken by an overlapping web. For floating point the order is
+  `f0, f2, f12, f14, f16, f18`.
+* **Overlap is counted in whole basic blocks**, not instructions: two webs
+  conflict if any block appears in both webs' live sets. One cached field
+  read near the end of a block can therefore extend a web across the
+  entire block and create a conflict that looks impossible from the
+  instruction listing.
+* **When a web cannot be colored, it splits**: part of it gets a register,
+  the rest is spilled, and the spill stores land at the split point. The
+  target's spill instructions in this function are consequences of its
+  register assignment, not independent facts — reproduce the assignment
+  and the spills follow.
+* **Variables whose address is taken fuse with everything they might
+  alias** into a single web. In this function, one stack variable whose
+  address escapes fuses with cached reads of a structure field; that fused
+  web's block overlaps permanently blocked one register for a neighboring
+  web in every variant of one whole source approach — the proof that that
+  approach could never match, no matter how it was rearranged.
 
-## The read-count dial
+## Steering the allocator with empty statements
 
-Empty-bodied conditional reads move priorities with fixed arithmetic:
+An empty-bodied conditional read — `if (!x);` — compiles to no
+instructions but still counts as a reference to `x` in the priority
+formula, as long as `x` has been assigned a value on that code path.
+This gives a small set of usable, predictable effects:
 
-* **+10 `save` per surviving reference**, with no discount for branch
-  nesting. No loop-depth weighting is reachable: trip-count-1 and
-  `while (0)` wrappers fold before `compute_save`, and a real loop changes
-  the frame.
-* **+1 cardbit per spanning statement** — each extra statement contributes
-  a transient block to every web alive across it, which is what pushes
-  `raw` over a units quantization step (`raw ≤ 6 → units 2`,
-  `7–10 → 3`, `11–14 → 4`).
-* **The steps are cliffs.** On one measured web: two references tied at
-  15.0 (symbol order decided), three references in one statement gave
-  70/4 = 17.5 and the wanted rotation, four collapsed code generation
-  entirely. Branchless spellings (`x + x + x`, `x | x | x`, `x & x & x`)
-  fold to a single reference.
-* References are counted **before** the empty body is folded away — the
-  reason a zero-instruction statement can rotate an allocation at all.
+* one extra reference adds 10 to `save`;
+* one extra *statement* adds one to the spanned-block count of every web
+  alive across it (each statement briefly forms its own block, and the
+  block count is taken before empty blocks are cleaned up);
+* whether the total helps or hurts depends entirely on which side of a
+  `units` step the web lands on — see the steps above.
 
-## When an empty read is free — the reaching-definition rule
+Reads of a variable that has **no assignment on the path** (declared but
+never written before this point) are not free: they force the allocator to
+treat the variable as live all the way back through the control-flow
+graph, which changes scheduling and, in the worst measured case, the
+stack-frame layout. Reads of defined variables cost nothing; reads of
+undefined ones are destructive. Bare expression statements (`x;`),
+self-assignments (`x = x;`), and casts are discarded by the front end
+before the allocator ever sees them and have no effect at all.
 
-A fixed-slot grid varying only the read target separates the outcomes on
-**reaching definitions**, not liveness:
+Two worked examples of these effects — including the exact
+reference-count arithmetic for the statement used in the final source —
+are in [register-steering.md](register-steering.md).
 
-| read target at the same slot | outcome |
-|---|---|
-| defined and live (the switch selector itself) | erased; no observable effect |
-| defined and live (other variables) | erased; allocation rotation only |
-| **no reaching definition** (declared, never assigned on the path) | real schedule damage — up to a frame change |
+## Why this page exists
 
-Reads of defined variables cost zero instructions regardless of liveness;
-a read with no reaching definition creates an upward-exposed web that drags
-back through the control-flow graph with schedule collateral. Bare labels,
-bare expression statements, self-assignments, and casts are all pruned
-before `uopt` and have no effect of any kind.
-
-## What the model bought
-
-The model turned "try another spelling" into arithmetic: given a trace's
-`save`/`units`/cardbits per web, the effect of adding a read at a given
-slot is computable before compiling. It also produced the campaign's two
-useful impossibility proofs — the alias-class bar above, and an exhaustive
-enumeration over the measured interference graph showing every feasible pop
-order for the target coloring shared structural preconditions the source
-family under test could not produce. Both proofs redirected the search
-instead of consuming it.
-
-The integer-side application of the same dial — a donor-free rotation that
-corrected an earlier assumption — is documented in
-[o3and-counterdial.md](o3and-counterdial.md).
+Matching normally treats the allocator as a black box: try a spelling,
+look at the diff. On this function that loop stopped converging — several
+register assignments looked reachable but never appeared, and the reason
+was invisible from the outside. Instrumenting the allocator replaced
+guessing with arithmetic: given the traced priorities, the effect of an
+added read at a given position is computable before compiling, and two
+approaches were proven dead (rather than merely unlucky) — one by the
+address-aliasing fusion above, one by enumerating every processing order
+consistent with the measured overlaps and showing the wanted assignment
+required conditions the source shape could not produce.

@@ -1,5 +1,7 @@
 # Match notes: what each non-idiomatic construct does and why it is there
 
+Terms used here are defined in [docs/glossary.md](docs/glossary.md).
+
 `scratch/source.c` compiles byte-exactly to the target with IDO 7.1 at
 `-O2 -mips2` — all 1,868 instructions, registers, branch structure, and the
 −168 stack frame. It reaches that result with four constructs no original
@@ -141,7 +143,7 @@ copy fact (its `update_ctnt` carries a fact only into a single-predecessor
 fallthrough block), and *then* the branch is deleted as a jump to the next
 instruction. Net effect: zero instructions added, and row 49 keeps `v0`.
 
-The arity is sharp and was measured directly at the intermediate-code
+The count is sharp and was measured directly at the intermediate-code
 level, independent of any source spelling: one or two tests are fully
 erased (no effect), three is exact, four is catastrophic (1,822 differing
 words). The compared variable and branch sense are irrelevant; only the
@@ -174,7 +176,7 @@ reads are of a defined variable; see the reaching-definition law in the
 project's law book) and is idempotent — one, two, or three copies produce
 byte-identical output.
 
-## Ablations: what each construct is worth
+## Removal costs: what each construct is worth
 
 Each row removes one construct from the final composition and keeps the
 rest. "Words" is the number of differing 4-byte instruction words against
@@ -226,7 +228,7 @@ the three properties from idiomatic code, replaces this file's constructs.
 |---|---|
 | `as1` `peep_reg`, the copy-fact carry rule, the twelve barriers, the ≤2-conditional eliminator, the stream-level zero-word proof | [docs/as1-barrier.md](docs/as1-barrier.md) |
 | The partition, layout, and parity findings; the relocation of labeled bodies | [docs/layout-and-partition.md](docs/layout-and-partition.md) |
-| The register-allocator model (priority formula, tie-breaks, interference granularity, the read-count dial arithmetic) | [docs/allocator-model.md](docs/allocator-model.md) |
-| The donor-free integer-rotation counterexample that falsified the donor-exclusivity assumption | [docs/o3and-counterdial.md](docs/o3and-counterdial.md) |
+| The register-allocator model: the priority formula, tie-breaks, block-level interference, and the arithmetic of steering it with empty statements | [docs/allocator-model.md](docs/allocator-model.md) |
+| Two zero-cost statements that steer register assignment, and the measured reason they cannot be combined | [docs/register-steering.md](docs/register-steering.md) |
 | Why a correct source still scored nonzero on the hosted target (the target's own `.rodata` extraction defect) | [docs/target-rodata-defect.md](docs/target-rodata-defect.md) |
 | Raw minimality measurements for the barrier arity | [docs/results/fjp-minimality-results.json](docs/results/fjp-minimality-results.json) |

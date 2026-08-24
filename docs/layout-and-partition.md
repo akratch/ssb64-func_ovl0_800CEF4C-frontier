@@ -1,5 +1,10 @@
 # Range-partition parity, block layout, and the nested-switch construction
 
+Terms: [glossary.md](glossary.md). "Parity" on this page means the
+combination of a branch's sense (which condition makes it jump) and which
+side of it is laid out as the fallthrough — two ways of compiling the same
+test that produce different bytes.
+
 The barrier described in [as1-barrier.md](as1-barrier.md) needs a statement
 position between the switch's range test and its high-table dispatch. A
 single `switch` offers none, so the partition has to be written in source —
@@ -50,15 +55,16 @@ labels loses:
 
 * Real bodies inside the high switch put them between the two dispatches
   (~1,790 differing words of pure block displacement).
-* `case X: goto body_label;` trampolines with the labeled bodies placed
-  textually later do not help: `uopt` relocates goto-labeled,
+* Forwarding stubs — `case X: goto body_label;` with the labeled bodies
+  placed textually later — do not help: `uopt` relocates goto-labeled,
   jump-table-referenced body blocks to sit immediately after the table that
   references them. Phase captures attribute the motion to uopt — cfe's
   output keeps the bodies at their source positions (records ~2,665 of
   ~4,125 in the capture), uopt's output has them inlined behind the table
   (records ~178). Anchoring each body with an additional unused low-range
   `case` label gives it a second predecessor and blocks the move, but
-  costs tail-duplicated instructions.
+  costs extra instructions (the optimizer duplicates each stub's first
+  instruction rather than moving the block).
 
 The arrangement with zero cost nests the low switch *inside* the high
 switch's body, entered through a label — the same language feature as
@@ -103,7 +109,7 @@ statement-form barrier heals the rewrite while leaving the slots wrong.
 Folding the three-test barrier into the ternary's condition does both jobs
 in one construct.
 
-## Ablation summary
+## Removal costs
 
 | Configuration | Differing words |
 |---|---:|
@@ -112,7 +118,7 @@ in one construct.
 | Barrier as a statement, plain selector | 8 |
 | No barrier tests at all | 9 |
 | Two sibling switches (`if/else`) | ~1,797 |
-| Trampolines + labeled bodies | ~1,787 |
+| Forwarding stubs + labeled bodies | ~1,787 |
 
 Six spellings of the full construction (barrier in the selector or as a
 statement, one- or three-test ternary on either switch, ballast ×1–×3)

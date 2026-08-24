@@ -65,12 +65,13 @@ function.
 
 | Path | What it is |
 |---|---|
+| [`docs/glossary.md`](docs/glossary.md) | Definitions: the IDO pipeline, comparison terms, and register-allocation terms used throughout |
 | [`MATCH_NOTES.md`](MATCH_NOTES.md) | Each non-idiomatic construct: what it does, why, ablation costs, and the de-fake specification |
 | [`scratch/`](scratch/) | The matched source and context, paste-ready for decomp.me |
 | [`docs/as1-barrier.md`](docs/as1-barrier.md) | The assembler copy-propagation wall and the branch-to-next barrier, proven at the phase-stream level |
 | [`docs/layout-and-partition.md`](docs/layout-and-partition.md) | Range-partition parity, block layout, and the nested-switch construction |
-| [`docs/allocator-model.md`](docs/allocator-model.md) | The IDO 7.1 global register allocator: priority formula, tie-breaks, interference granularity, and the read-count dial |
-| [`docs/o3and-counterdial.md`](docs/o3and-counterdial.md) | A donor-free register-rotation result that corrected an earlier working assumption |
+| [`docs/allocator-model.md`](docs/allocator-model.md) | The IDO 7.1 global register allocator: the priority formula, tie-breaks, block-level interference, and how empty statements steer it |
+| [`docs/register-steering.md`](docs/register-steering.md) | Two zero-cost statements that steer register assignment, and why neither is the fix |
 | [`docs/target-rodata-defect.md`](docs/target-rodata-defect.md) | The truncated-target analysis |
 | [`docs/results/`](docs/results/) | Machine-readable measurement results |
 | [`history/`](history/) | Superseded intermediate sources kept as evidence |
