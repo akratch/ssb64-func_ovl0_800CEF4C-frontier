@@ -1,0 +1,22 @@
+{
+  "schema": "ssb64-func-frontier-v1",
+  "function": "func_ovl0_800CEF4C",
+  "project": "ssb-decomp-re",
+  "compiler": "ido7.1",
+  "flags": "-O2 -mips2",
+  "verdict": "exact",
+  "words": 0,
+  "raw": 6,
+  "norm": 0,
+  "regs": 0,
+  "fp": 0,
+  "opcodes": 0,
+  "gaps": 0,
+  "insns": 1868,
+  "frame": -168,
+  "source_sha256": "c0a59f28cabebf618f9651f83d7ade8678841d73f809e13ffaea8d1e477011c9",
+  "notes": [
+    "words counts differing 4-byte instruction words; the six raw sites are relocation-symbol naming differences (section-symbol+addend vs named-symbol+0) that resolve identically at link time.",
+    "Against a target whose .rodata is truncated at the jump tables (see docs/target-rodata-defect.md), a hosted comparison charges the function's own 20-byte literal pool as a score of 5; against a correctly scoped target the score is 0."
+  ]
+}
