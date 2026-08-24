@@ -11,6 +11,12 @@ uses `addiu t3,v1,-250`, while the target uses `addiu t3,v0,-250`. All 1,868
 instructions, opcodes, floating-point registers, branch/gap structure, and the
 `-168` stack frame otherwise match.
 
+Compiler-phase capture shows UGEN already emits the target register. Stock
+IDO 7.1 `as1` alone propagates the preceding `v1 -> v0` copy back into the
+high-range subtraction. `FABLE_HANDOFF.md` v4 records the exact phase proof,
+the zero-output Binasm barriers that reproduce the ROM, and the 3,654-variant
+source corpus. No proper zero-word C source is claimed yet.
+
 `scratch/source.c` is paste-ready. Use IDO 7.1 with `-O2 -mips2`.
 
 ## Contents
