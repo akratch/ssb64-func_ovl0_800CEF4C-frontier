@@ -1,42 +1,41 @@
 {
-  "status": "site-faithful-score-hosted-confirmation-pending",
-  "slug": null,
-  "parent": "FDgt8",
+  "status": "hosted-confirmed",
+  "slug": "Rom0j",
+  "parent": "S4NAi",
   "language": "C",
   "libraries": [],
   "diff_flags": [],
   "preset": null,
   "name": "func_ovl0_800CEF4C",
-  "description": "Codex/Fable-race 150-point / 21-word pre-sine donor frontier",
+  "description": "Hosted score-10 frontier with one row-49 integer operand residual",
   "compiler": "ido7.1",
   "platform": "n64",
   "compiler_flags": "-O2 -mips2",
   "diff_label": "func_ovl0_800CEF4C",
-  "score": 150,
+  "score": 10,
   "max_score": 191000,
   "match_override": false,
   "family": "vJPFM",
   "local_comparison": {
-    "words": 21,
-    "raw": 33,
-    "norm": 21,
-    "regs": 21,
-    "fp": 20,
+    "words": 1,
+    "raw": 7,
+    "norm": 1,
+    "regs": 1,
+    "fp": 0,
     "constants": 0,
     "opcodes": 0,
     "gaps": 0,
     "insns": 1868,
     "frame": -168,
     "first_divergent_row": 49,
-    "candidate_text_sha256": "7b61f8a1ea608598b8a7a4dc44d2ae42ed04b321f1c69fdac111983c927b6bc4"
+    "candidate_text_sha256": "26815cdee6cd8aff837fb66d00c3f205b11e12356749c63f607b180aca67a7ba"
   },
   "site_faithful_score": {
-    "score": 150,
+    "score": 10,
     "max_score": 191000,
-    "percentage": 99.92146596858639,
-    "baseline_calibration_score": 177,
-    "asm_differ_commit": "96fc879d9d8293193cf8452f0926eafc751546d7"
+    "percentage": 99.99476439790575,
+    "status": "hosted-confirmed"
   },
-  "source_sha256": "6427f1c9a2a5b9459726cf6f996cd1307c7d01fbfbbcc93296bead7ecdd73e74",
-  "current_object_sha256": "2b6c9565ed6b2451d1d2fb8a68ca9f9ef6df0f15bd1d3d81f181662a5bdcba3a"
+  "source_sha256": "323eeb5eb7b632399d5c0e3896ac28385a2a1eefa4715c9f6e58a41e816357b7",
+  "current_object_sha256": "26b8b88887f8d291ccac4eab76641c860cef31053158c3b3c6cc4300bf68cb35"
 }

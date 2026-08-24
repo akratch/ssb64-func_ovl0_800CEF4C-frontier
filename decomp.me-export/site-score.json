@@ -1,14 +1,10 @@
 {
   "schema": "decomp-me-site-faithful-score-v1",
-  "score": 150,
+  "score": 10,
   "max_score": 191000,
-  "percentage": 99.92146596858639,
-  "status": "hosted-confirmation-pending",
-  "baseline_calibration": {
-    "expected": 177,
-    "observed": 177
-  },
-  "asm_differ_commit": "96fc879d9d8293193cf8452f0926eafc751546d7",
-  "source_sha256": "6427f1c9a2a5b9459726cf6f996cd1307c7d01fbfbbcc93296bead7ecdd73e74",
-  "current_object_sha256": "2b6c9565ed6b2451d1d2fb8a68ca9f9ef6df0f15bd1d3d81f181662a5bdcba3a"
+  "percentage": 99.99476439790575,
+  "status": "hosted-confirmed",
+  "slug": "Rom0j",
+  "source_sha256": "323eeb5eb7b632399d5c0e3896ac28385a2a1eefa4715c9f6e58a41e816357b7",
+  "current_object_sha256": "26b8b88887f8d291ccac4eab76641c860cef31053158c3b3c6cc4300bf68cb35"
 }

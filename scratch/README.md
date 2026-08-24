@@ -4,16 +4,11 @@ Project: `ssb-decomp-re`.
 
 ## Frontier status
 
-This Codex/Fable-race source scores **150 / 99.9215%** with decomp.me's current
-`asm-differ` scorer, advancing the prior Codex frontier of 165. The
-scorer was calibrated by reproducing that 177 result exactly. The local
-whole-section comparison is at 21 differing instruction words. It has the
-exact 1,868-instruction shape, opcode sequence, branch/gap structure, and
-`-168` stack frame. The residual is 20 floating-point register sites and one
-integer register site; all stack-home mismatches are exact.
-
-This is the current site-faithful scoring frontier; direct hosted paste
-confirmation is pending. `source.c` is paste-ready.
+The hosted `Rom0j` frontier scores **10 / 99.9947644%**. Relocation-aware local
+comparison reduces the residual to one instruction word at row 49:
+`addiu t3,v1,-250` instead of target `addiu t3,v0,-250`. All 1,868
+instructions, opcodes, floating-point registers, branch/gap structure, and the
+`-168` stack frame otherwise match. `source.c` is paste-ready.
 `../decomp.me-export/code.c` is an identical convenience copy alongside the
 exported context and object files.
 
