@@ -1,54 +1,85 @@
-# Fable handoff v2: `func_ovl0_800CEF4C`
+# Continuation handoff v3: `func_ovl0_800CEF4C`
 
-## Current truth (2026-08-23, post-allocator-campaign)
+## Current truth (2026-08-24)
 
-- Hosted frontier: **177 / 99.91%** (unchanged; `scratch/source.c` = the
-  25-word family). Local: 25 words, raw 37.
-- **The 25-word family is a proven dead end**: its remaining mirror
-  (cx2/sx3/temp2/temp1/f1 register webs) is unreachable — exhaustive pop-order
-  enumeration over the measured interference graph shows every feasible
-  ordering requires the alias-class edge (web 87 → temp2) severed, and that
-  edge is structural to the family's double vel.z read. See ALLOCATOR_MODEL.md.
-- **New research basin** (`research-basin/basin27-champion.c`): op=0, gaps=0,
-  insns=1868, frame -168, **27 words**, with temp2=f16, temp1=f14, f1=f12,
-  cx1=f16+correct spill placement all healed. Remaining: the two sine webs
-  (want f18), cx2-head (want f12), the 1/32768 const web (want f14),
-  f0-product (want f2), one integer web pair (a0/v1), row 49.
+- Hosted challenger: decomp.me `Rom0j`, parent `S4NAi`, score **10 / 191000
+  (99.9947644%)** with IDO 7.1 and `-O2 -mips2`.
+- Relocation-aware local comparison is stronger than the hosted weighted score:
+  the residual is exactly **one generated instruction word**, not ten words.
+- Candidate row 49: `addiu t3,v1,-250` (`0x246BFF06`).
+- Target row 49: `addiu t3,v0,-250` (`0x244BFF06`).
+- All 1,868 instructions, opcodes, FP registers, scheduling/gaps, and the `-168`
+  frame otherwise match. Local metrics are `words=1`, `regs=1`, `fp=0`,
+  `opcodes=0`, `gaps=0`, `norm=1`, `raw=7`.
+- `scratch/source.c` and `decomp.me-export/code.c` preserve the challenger
+  source byte-for-byte. The source SHA-256 is
+  `323eeb5eb7b632399d5c0e3896ac28385a2a1eefa4715c9f6e58a41e816357b7`.
 
-## What the 27-word basin is made of
+The supplied `(5).zip` SHA-256 is
+`5384a739ebe88e731a55735d21032fec250a543086a80e6d3fb29e5e706cb4e8`.
+Its target object is byte-identical to the established campaign target
+(`a50945f4dfa8ec988445ae92b6b2517eddaaf69096087f640af75b844fc1c122`).
 
-vt2 junction (`sp70[0] += temp2 * (sx3 / cx3);` — single tail vel.z read),
-f1-def before temp1-def, phase reads {f1,f1,temp1,temp1,f0}, call3
-hand-expanded on ONE physical line with two `if (!var_f14);` slots before
-`angle_id_2 += 0x400;`, distinct sx4 in call4, pos.y order C,B,A / pos.z
-order B,C,A. Every listed element is load-bearing; ~2600 variants around it
-have been scored (sources-grid*/sources-mega* under
-`.workbench/cef4c/agent-fp-tail/`).
+## Why this remains plausibly solvable
 
-## The remaining problem, precisely
+The candidate already emits `move v0,v1` on row 48, exactly like the target.
+Only the following switch-range `addiu` consumes the old `v1` representative;
+the target consumes the new `v0` copy. This is an IDO UGEN/copy-coalescing
+choice, not an opcode, scheduling, floating-point, or frame mismatch.
 
-1. The two sine webs need f18(29), which requires them popping after
-   f1/temp1/temp2 with full masks; their priorities floor at 1.33/2.0 and the
-   pack ceilings at 1.25/1.0 — every block-adding dial in rows [1700-1745]
-   breaks the schedule in every equilibrium tested.
-2. Three of the remaining webs (f0p, sx4, const) are separated from their
-   mask-providers by block boundaries created by the 5-read phase structure —
-   the hypothesis is that the winning source uses ≤3 phase reads (matching
-   the target's block layout) with compensating structure elsewhere.
-3. Integer side: `if (!command);` before the switch heals row 49 at +8
-   collateral (a v1/a1 web-pair swap that resists all tested donors).
+Adding `if (!command);` immediately before `switch (opcode)` makes row 49 use
+the correct `v0`, proving that source shape can select the target copy. Its
+collateral is a fixed nine-word `v1`/`a1` rotation on rows 36, 38, 40, 41, 43,
+44, 45, 46, and 48. The remaining task is therefore to keep that healed copy
+choice while restoring the two integer web colors.
 
-## Tooling (in the main checkout)
+Allocator traces explain the rotation:
 
-- `.workbench/cef4c/ido71-instrumented/uopt-trace2.c` + `build/uopt2`: the
-  deep-instrumented uopt (interference events, live/card bvects, exact
-  priorities). Swap into `toolchain/uopt` around `trace-one.sh`.
-- `.workbench/cef4c/agent-fp-tail/score_wave.py <dir> <jobs>`: compile+score
-  with the 6-column heal signature (r49 cx2 sx3 tm2 tm1 f1).
-- `.workbench/cef4c/agent-fp-tail/gen_mega.py` and sources-mega*/: the
-  grid-search corpus.
+- Baseline: web 35 priority 20 pops to color 2 (`v1`); webs 23 and 48 have
+  priority 15 and take colors 3/4.
+- Donor: web 48 remains priority 15 and pops first to color 2; webs 23 and 35
+  fall to priority 13.333 and take colors 3/4.
 
-## Promotion protocol (unchanged)
+## Exhausted probes on the score-10 source
 
-Only promote on genuine hosted improvement (raw < 37 territory); at exact
-100% use commit subject `EXACT 100%: match func_ovl0_800CEF4C`.
+Three bounded, serial, low-priority campaigns compiled and statically compared
+796 variants without executing generated objects:
+
+1. 84 switch spellings, types, local carriers, normalization spellings,
+   declaration adjacency variants, and junction donor pairs.
+2. 269 Pokemon Snap-style declaration positions, command types, CFG read
+   placements, carrier widths, and placement crosses.
+3. 443 repeated/distinct opcode expressions, compound donor expressions,
+   multiplicity probes, and early-opcode/pre-switch-command crosses.
+
+The important invariant is sharp: reads before the first opcode mask retain the
+one-word baseline; command reads from the first mask onward heal row 49 but
+enter the same nine-word integer rotation. Repeated reads are allocator-
+idempotent. All useful donor basins retain `opcodes=0`, `gaps=0`, and `fp=0`.
+
+Late dead reads of `sx3` or `angle_id` are not useful on this source family;
+they disrupt the otherwise exact vortex schedule.
+
+## Recommended next attack
+
+Focus on changing SSA formation rather than adding more empty reads:
+
+- Fold the first assignment into the condition:
+  `if ((opcode = (command & 0xF8)) > 0x98)`.
+- Fold the second assignment into the first inner comparison.
+- Test `opcode = command; opcode &= 0xF8` and the analogous `0xF0` form.
+- Split the raw command through a temporary at the load, selectively using the
+  alias for normalization versus case-flag reads.
+- Test zero-code label/goto junction shapes that can alter UGEN block identity
+  without adding a condition web.
+
+Do not disturb the vortex tail unless a candidate first retains the exact FP
+schedule. The previous 25/27/21-word research families are obsolete as
+frontiers; they remain useful only for allocator archaeology.
+
+## Promotion protocol
+
+Promote only a genuine zero-word local result followed by hosted confirmation.
+For exact 100%, use the commit subject exactly:
+
+`EXACT 100%: match func_ovl0_800CEF4C`
